@@ -19,7 +19,7 @@ const countProducts = document.querySelector('#contador-productos');
 const cartEmpty = document.querySelector('.cart-empty');
 const cartTotal = document.querySelector('.cart-total');
 
-productsList.addEventListener('click', e => {
+productsList.addEventListener('click', async (e) => {
     if (e.target.classList.contains('btn-add-cart')) {
         const product = e.target.parentElement;
 
@@ -29,9 +29,7 @@ productsList.addEventListener('click', e => {
             price: product.querySelector('p').textContent,
         };
 
-        const exists = allProducts.findIndex(
-            prod => prod.title === infoProduct.title
-        );
+        const exists = allProducts.findIndex((prod) => prod.title === infoProduct.title);
 
         if (exists !== -1) {
             allProducts[exists].quantity++;
@@ -41,22 +39,28 @@ productsList.addEventListener('click', e => {
 
         showHTML();
 
-        localStorage.setItem('products', JSON.stringify(allProducts));
+        try {
+            await saveProductsLocally();
+        } catch (error) {
+            console.error('Error saving products locally:', error);
+        }
     }
 });
 
-rowProduct.addEventListener('click', e => {
+rowProduct.addEventListener('click', async (e) => {
     if (e.target.classList.contains('icon-close')) {
         const product = e.target.parentElement;
         const title = product.querySelector('p').textContent;
 
-        allProducts = allProducts.filter(
-            product => product.title !== title
-        );
+        allProducts = allProducts.filter((prod) => prod.title !== title);
 
         showHTML();
 
-        localStorage.setItem('products', JSON.stringify(allProducts));
+        try {
+            await saveProductsLocally();
+        } catch (error) {
+            console.error('Error saving products locally:', error);
+        }
     }
 });
 
@@ -76,7 +80,7 @@ const showHTML = () => {
     let total = 0;
     let totalOfProducts = 0;
 
-    allProducts.forEach(product => {
+    allProducts.forEach((product) => {
         const containerProduct = document.createElement('div');
         containerProduct.classList.add('cart-product');
 
@@ -112,10 +116,34 @@ const showHTML = () => {
     countProducts.innerText = totalOfProducts;
 };
 
-window.addEventListener('load', () => {
-    const storedProducts = JSON.parse(localStorage.getItem('products'));
-    if (storedProducts) {
-        allProducts = storedProducts;
-        showHTML();
+const fetchData = async () => {
+    try {
+        const response = await fetch('URL_DE_TU_API_O_DATOS');
+        const data = await response.json();
+        // Procesar los datos recibidos si es necesario
+        console.log('Datos obtenidos:', data);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+};
+
+const saveProductsLocally = async () => {
+    try {
+        localStorage.setItem('products', JSON.stringify(allProducts));
+    } catch (error) {
+        throw new Error('Error saving products to local storage');
+    }
+};
+
+window.addEventListener('load', async () => {
+    try {
+        const storedProducts = JSON.parse(localStorage.getItem('products'));
+        if (storedProducts) {
+            allProducts = storedProducts;
+            showHTML();
+        }
+        await fetchData(); // Llamada a la función para obtener datos
+    } catch (error) {
+        console.error('Error during initial setup:', error);
     }
 });
