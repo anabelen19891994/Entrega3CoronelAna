@@ -186,19 +186,19 @@ productsList.addEventListener('click', async (e) => {
             allProducts[exists].quantity++;
             Toastify({
                 text: `¡Se agregó un ${infoProduct.title} más al carrito!`,
-                duration: 3000,
+                duration: 5000,
                 close: true,
                 gravity: 'bottom',
-                backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
+                backgroundColor: 'linear-gradient(to right, #263143)',
             }).showToast();
         } else {
             allProducts.push(infoProduct);
             Toastify({
                 text: `¡Se agregó ${infoProduct.title} al carrito!`,
-                duration: 3000,
+                duration: 5000,
                 close: true,
                 gravity: 'bottom',
-                backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
+                backgroundColor: 'linear-gradient(to right, #263143)',
             }).showToast();
         }
 
