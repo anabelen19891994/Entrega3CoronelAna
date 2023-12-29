@@ -35,7 +35,7 @@ productsList.addEventListener('click', async (e) => {
             allProducts[exists].quantity++;
             Toastify({
                 text: `¡Se agregó un ${infoProduct.title} más al carrito!`,
-                duration: 5000,
+                duration: 4000,
                 close: true,
                 gravity: 'bottom',
                 backgroundColor: 'linear-gradient(to right, #263143)',
@@ -44,7 +44,7 @@ productsList.addEventListener('click', async (e) => {
             allProducts.push(infoProduct);
             Toastify({
                 text: `¡Se agregó ${infoProduct.title} al carrito!`,
-                duration: 5000,
+                duration: 4000,
                 close: true,
                 gravity: 'bottom',
                 backgroundColor: 'linear-gradient(to right, #263143)',
